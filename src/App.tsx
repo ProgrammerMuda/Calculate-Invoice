@@ -750,7 +750,7 @@ export default function App() {
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-bold text-slate-900 text-base mb-0.5">Lease Invoice</h3>
-                <p className="text-xs text-slate-500 font-medium">Unit rental fees, service charges & sinking fund</p>
+                <p className="text-xs text-slate-500 font-medium">Unit rental fee payments</p>
               </div>
               <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-blue-600 transition-colors shrink-0" />
             </button>
