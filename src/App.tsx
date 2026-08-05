@@ -699,6 +699,9 @@ export default function App() {
 
             {/* Title Bar */}
             <div className="flex items-center px-5 my-6 relative justify-center">
+              <button className="absolute left-5 p-1 -ml-1 text-slate-700 hover:bg-slate-100 rounded-full transition-colors">
+                <CaretLeft size={24} weight="bold" />
+              </button>
               <h1 className="text-lg font-bold text-slate-800">Invoice</h1>
             </div>
           </div>
