@@ -1261,7 +1261,7 @@ export default function App() {
       
       {/* Invoice Detail Screen */}
       {selectedInvoice && (
-        <div className="absolute inset-0 z-40 bg-background flex flex-col animate-in slide-in-from-right duration-300">
+        <div className="absolute inset-0 z-40 bg-background flex flex-col animate-in slide-in-from-bottom duration-300">
           {/* Header */}
           <div className="bg-white shrink-0">
             <div className="flex items-center px-5 my-5 relative justify-center">
