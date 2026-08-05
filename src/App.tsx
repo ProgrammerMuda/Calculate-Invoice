@@ -891,7 +891,7 @@ export default function App() {
       )}
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto overscroll-contain bg-background pb-32 pt-3">
+      <div className="flex-1 overflow-y-auto overscroll-contain bg-background pb-32 pt-5">
         
         {/* TAB: DRAFT */}
         {activeTab === 'draft' && (
