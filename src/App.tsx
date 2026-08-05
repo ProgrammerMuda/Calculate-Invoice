@@ -1298,17 +1298,17 @@ export default function App() {
           <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-4 pb-28">
             
             {/* 1. Header Summary Card */}
-            <div className="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden flex flex-col">
-              <div className="p-4 flex items-center justify-between gap-3">
+            <div className="bg-white rounded-[18px] border border-slate-100 shadow-sm overflow-hidden flex flex-col">
+              <div className="p-4 flex items-center justify-between gap-3 bg-white">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                    <Receipt size={22} weight="fill" />
+                  <div className="w-12 h-12 rounded-xl bg-[#e6f7f3] text-[#14b8a6] flex items-center justify-center shrink-0">
+                    <Receipt size={24} weight="fill" />
                   </div>
                   <div className="min-w-0">
-                    <h2 className="font-bold text-slate-900 text-base leading-tight truncate">
+                    <h2 className="font-bold text-slate-800 text-[15px] leading-snug truncate">
                       {formatFullMonth(selectedInvoice.month)} Bill
                     </h2>
-                    <p className="text-[11px] font-mono font-medium text-slate-400 mt-0.5 truncate">
+                    <p className="text-xs font-normal text-slate-400 mt-0.5 tracking-tight truncate">
                       {getInvoiceNumber(selectedInvoice)}
                     </p>
                   </div>
@@ -1322,18 +1322,16 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Teal Banner Dates */}
-              <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-3 flex items-center justify-between text-white">
+              {/* Solid Teal Banner Dates */}
+              <div className="bg-[#14b8a6] px-5 py-3 flex items-center justify-between text-white rounded-b-[18px]">
                 <div>
-                  <p className="text-[10px] text-emerald-100 font-medium">Issue Date</p>
-                  <p className="text-xs font-bold mt-0.5">01 July 2026</p>
+                  <p className="text-[11px] text-teal-100/90 font-medium">Issue Date</p>
+                  <p className="text-sm font-bold text-white mt-0.5">01 July 2026</p>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">
-                  <CalendarBlank size={18} weight="fill" />
-                </div>
+                <CalendarBlank size={24} weight="fill" className="text-white shrink-0" />
                 <div className="text-right">
-                  <p className="text-[10px] text-emerald-100 font-medium">Due Date</p>
-                  <p className="text-xs font-bold mt-0.5">02 August 2026</p>
+                  <p className="text-[11px] text-teal-100/90 font-medium text-right">Due Date</p>
+                  <p className="text-sm font-bold text-white mt-0.5 text-right">02 August 2026</p>
                 </div>
               </div>
             </div>
@@ -2212,7 +2210,7 @@ const InvoiceStatusBadge = ({ status }: { status: SentInvoice['status'] }) => {
       colorClass = 'bg-[#22c55e] text-white';
       break;
     case 'Unpaid':
-      colorClass = 'bg-amber-500 text-white';
+      colorClass = 'bg-[#f97316] text-white';
       break;
     case 'Overdue':
       colorClass = 'bg-red-500 text-white';
