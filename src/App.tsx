@@ -1361,38 +1361,47 @@ export default function App() {
 
             {/* 3. Electricity Meter Reading Photo & Card */}
             <div className="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden flex flex-col">
-              <div className="relative w-full h-44 bg-slate-900 overflow-hidden">
+              <div className="relative w-full h-52 bg-slate-900 overflow-hidden">
                 <img src={electricMeterPhoto} alt="Electricity Meter" className="w-full h-full object-cover" />
-                <div className="absolute bottom-3 right-3 w-8 h-8 rounded-lg bg-black/60 backdrop-blur-sm flex items-center justify-center text-white">
-                  <MagnifyingGlass size={16} weight="bold" />
+                <div className="absolute bottom-3 right-3 w-9 h-9 rounded-xl bg-white/80 backdrop-blur-sm flex items-center justify-center text-slate-700 shadow-sm">
+                  <MagnifyingGlass size={18} weight="bold" />
                 </div>
               </div>
-              <div className="p-4 flex flex-col gap-3">
-                <h3 className="font-bold text-slate-900 text-sm">Electricity Usage</h3>
-                <div className="flex items-center justify-between text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
-                  <div className="text-center">
-                    <p className="text-[10px] text-slate-400 font-medium uppercase">Previous</p>
-                    <p className="font-bold text-slate-800 text-sm mt-0.5">500</p>
+              <div className="px-4 pt-4 pb-1 flex flex-col gap-3">
+                <h3 className="font-bold text-slate-900 text-base">Electricity Usage</h3>
+                {/* Usage Row */}
+                <div className="flex items-center gap-3">
+                  {/* Previous */}
+                  <div className="flex flex-col items-center">
+                    <p className="text-[12px] text-slate-500 font-medium">Previous</p>
+                    <p className="font-bold text-slate-800 text-base mt-0.5">500</p>
                   </div>
-                  <div className="w-6 h-6 rounded-md bg-slate-200/60 flex items-center justify-center text-slate-500">
-                    <CaretRight size={14} weight="bold" />
+                  {/* Arrow Button */}
+                  <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
+                    <CaretRight size={16} weight="bold" />
                   </div>
-                  <div className="text-center">
-                    <p className="text-[10px] text-slate-400 font-medium uppercase">Current</p>
-                    <p className="font-bold text-slate-800 text-sm mt-0.5">580</p>
+                  {/* Current */}
+                  <div className="flex flex-col items-center">
+                    <p className="text-[12px] text-slate-500 font-medium">Current</p>
+                    <p className="font-bold text-slate-800 text-base mt-0.5">580</p>
                   </div>
-                  <div className="w-6 h-6 rounded-md bg-slate-200/60 flex items-center justify-center text-slate-500">
-                    <CaretRight size={14} weight="bold" />
+                  {/* Arrow Button */}
+                  <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
+                    <CaretRight size={16} weight="bold" />
                   </div>
-                  <div className="text-center">
-                    <p className="text-[10px] text-slate-400 font-medium uppercase">Total</p>
-                    <p className="font-bold text-emerald-600 text-sm mt-0.5">80</p>
+                  {/* Total */}
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-[14px] font-semibold text-slate-700">Total:</p>
+                    <p className="font-bold text-emerald-500 text-[15px]">80</p>
                   </div>
                 </div>
-                <div className="bg-blue-500 text-white text-xs font-medium p-2.5 rounded-xl flex items-center gap-2">
-                  <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">i</span>
-                  <span>The unit of measurement is (KwH)</span>
+              </div>
+              {/* Full-width Blue Info Banner */}
+              <div className="mt-3 bg-blue-500 text-white text-xs font-medium px-4 py-3 flex items-center gap-2">
+                <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                  <span className="text-[11px] font-bold">i</span>
                 </div>
+                <span>The unit of measurement is (KwH)</span>
               </div>
             </div>
 
@@ -1436,38 +1445,47 @@ export default function App() {
 
             {/* 5. Water Meter Reading Photo & Card */}
             <div className="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden flex flex-col">
-              <div className="relative w-full h-44 bg-slate-900 overflow-hidden">
+              <div className="relative w-full h-52 bg-slate-900 overflow-hidden">
                 <img src={waterMeterPhoto} alt="Water Meter" className="w-full h-full object-cover" />
-                <div className="absolute bottom-3 right-3 w-8 h-8 rounded-lg bg-black/60 backdrop-blur-sm flex items-center justify-center text-white">
-                  <MagnifyingGlass size={16} weight="bold" />
+                <div className="absolute bottom-3 right-3 w-9 h-9 rounded-xl bg-white/80 backdrop-blur-sm flex items-center justify-center text-slate-700 shadow-sm">
+                  <MagnifyingGlass size={18} weight="bold" />
                 </div>
               </div>
-              <div className="p-4 flex flex-col gap-3">
-                <h3 className="font-bold text-slate-900 text-sm">Water Usage</h3>
-                <div className="flex items-center justify-between text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
-                  <div className="text-center">
-                    <p className="text-[10px] text-slate-400 font-medium uppercase">Previous</p>
-                    <p className="font-bold text-slate-800 text-sm mt-0.5">300</p>
+              <div className="px-4 pt-4 pb-1 flex flex-col gap-3">
+                <h3 className="font-bold text-slate-900 text-base">Water Usage</h3>
+                {/* Usage Row */}
+                <div className="flex items-center gap-3">
+                  {/* Previous */}
+                  <div className="flex flex-col items-center">
+                    <p className="text-[12px] text-slate-500 font-medium">Previous</p>
+                    <p className="font-bold text-slate-800 text-base mt-0.5">300</p>
                   </div>
-                  <div className="w-6 h-6 rounded-md bg-slate-200/60 flex items-center justify-center text-slate-500">
-                    <CaretRight size={14} weight="bold" />
+                  {/* Arrow Button */}
+                  <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
+                    <CaretRight size={16} weight="bold" />
                   </div>
-                  <div className="text-center">
-                    <p className="text-[10px] text-slate-400 font-medium uppercase">Current</p>
-                    <p className="font-bold text-slate-800 text-sm mt-0.5">320</p>
+                  {/* Current */}
+                  <div className="flex flex-col items-center">
+                    <p className="text-[12px] text-slate-500 font-medium">Current</p>
+                    <p className="font-bold text-slate-800 text-base mt-0.5">320</p>
                   </div>
-                  <div className="w-6 h-6 rounded-md bg-slate-200/60 flex items-center justify-center text-slate-500">
-                    <CaretRight size={14} weight="bold" />
+                  {/* Arrow Button */}
+                  <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
+                    <CaretRight size={16} weight="bold" />
                   </div>
-                  <div className="text-center">
-                    <p className="text-[10px] text-slate-400 font-medium uppercase">Total</p>
-                    <p className="font-bold text-emerald-600 text-sm mt-0.5">20</p>
+                  {/* Total */}
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-[14px] font-semibold text-slate-700">Total:</p>
+                    <p className="font-bold text-emerald-500 text-[15px]">20</p>
                   </div>
                 </div>
-                <div className="bg-blue-500 text-white text-xs font-medium p-2.5 rounded-xl flex items-center gap-2">
-                  <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">i</span>
-                  <span>The unit of measurement is (M³)</span>
+              </div>
+              {/* Full-width Blue Info Banner */}
+              <div className="mt-3 bg-blue-500 text-white text-xs font-medium px-4 py-3 flex items-center gap-2">
+                <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                  <span className="text-[11px] font-bold">i</span>
                 </div>
+                <span>The unit of measurement is (M³)</span>
               </div>
             </div>
 
