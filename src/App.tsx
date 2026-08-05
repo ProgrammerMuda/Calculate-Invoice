@@ -707,52 +707,73 @@ export default function App() {
           </div>
 
           {/* Menu Options List */}
-          <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-3.5">
+          <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-4">
             <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Invoice Category</p>
 
             {/* 1. Monthly Invoice Card */}
             <button
               onClick={() => setCurrentPage('monthly')}
-              className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:border-primary/40 transition-all text-left group cursor-pointer border border-slate-200/80 active:scale-[0.99]"
+              className="w-full bg-white rounded-2xl p-4 flex items-center gap-4 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-200 text-left group cursor-pointer active:scale-[0.99] relative overflow-hidden"
             >
-              <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-teal-50 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm">
                 <CalendarBlank size={24} weight="fill" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-slate-900 text-base mb-0.5">Monthly Invoice</h3>
-                <p className="text-xs text-slate-500 font-medium">Utility bill, service charge & sinking fund bill</p>
+                <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary/10 text-primary mb-1">
+                  Utility Bills
+                </span>
+                <h3 className="font-bold text-slate-900 text-[15px] leading-snug">Monthly Invoice</h3>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed mt-0.5">
+                  Utility bill, service charge & sinking fund bill
+                </p>
               </div>
-              <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-primary transition-colors shrink-0" />
+              <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-primary group-hover:text-white flex items-center justify-center text-slate-400 transition-all duration-200 group-hover:translate-x-0.5 shrink-0">
+                <CaretRight size={16} weight="bold" />
+              </div>
             </button>
 
             {/* 2. Other Invoice Card */}
             <button
               onClick={() => setSelectedMenuToast('Other Invoice')}
-              className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:border-primary/40 transition-all text-left group cursor-pointer border border-slate-200/80 active:scale-[0.99]"
+              className="w-full bg-white rounded-2xl p-4 flex items-center gap-4 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-purple-300 transition-all duration-200 text-left group cursor-pointer active:scale-[0.99] relative overflow-hidden"
             >
-              <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-100/70 via-purple-50 to-indigo-50 text-purple-600 flex items-center justify-center shrink-0 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 shadow-sm">
                 <Receipt size={24} weight="fill" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-slate-900 text-base mb-0.5">Other Invoice</h3>
-                <p className="text-xs text-slate-500 font-medium">Ad-hoc fees, penalties & miscellaneous charges</p>
+                <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-700 mb-1">
+                  Ad-hoc & Penalty
+                </span>
+                <h3 className="font-bold text-slate-900 text-[15px] leading-snug">Other Invoice</h3>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed mt-0.5">
+                  Ad-hoc fees, penalties & miscellaneous charges
+                </p>
               </div>
-              <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-primary transition-colors shrink-0" />
+              <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-purple-600 group-hover:text-white flex items-center justify-center text-slate-400 transition-all duration-200 group-hover:translate-x-0.5 shrink-0">
+                <CaretRight size={16} weight="bold" />
+              </div>
             </button>
 
             {/* 3. Lease Invoice Card */}
             <button
               onClick={() => setSelectedMenuToast('Lease Invoice')}
-              className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:border-primary/40 transition-all text-left group cursor-pointer border border-slate-200/80 active:scale-[0.99]"
+              className="w-full bg-white rounded-2xl p-4 flex items-center gap-4 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-200 text-left group cursor-pointer active:scale-[0.99] relative overflow-hidden"
             >
-              <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-100/70 via-blue-50 to-cyan-50 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm">
                 <House size={24} weight="fill" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-slate-900 text-base mb-0.5">Lease Invoice</h3>
-                <p className="text-xs text-slate-500 font-medium">Unit rental fee payments</p>
+                <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 mb-1">
+                  Unit Rental
+                </span>
+                <h3 className="font-bold text-slate-900 text-[15px] leading-snug">Lease Invoice</h3>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed mt-0.5">
+                  Unit rental fee payments
+                </p>
               </div>
-              <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-primary transition-colors shrink-0" />
+              <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center text-slate-400 transition-all duration-200 group-hover:translate-x-0.5 shrink-0">
+                <CaretRight size={16} weight="bold" />
+              </div>
             </button>
           </div>
 
