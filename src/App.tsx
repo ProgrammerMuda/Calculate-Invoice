@@ -728,31 +728,31 @@ export default function App() {
             {/* 2. Other Invoice Card */}
             <button
               onClick={() => setSelectedMenuToast('Other Invoice')}
-              className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:border-purple-300 transition-all text-left group cursor-pointer border border-slate-200/80 active:scale-[0.99]"
+              className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:border-primary/40 transition-all text-left group cursor-pointer border border-slate-200/80 active:scale-[0.99]"
             >
-              <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
                 <Receipt size={24} weight="fill" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-bold text-slate-900 text-base mb-0.5">Other Invoice</h3>
                 <p className="text-xs text-slate-500 font-medium">Ad-hoc fees, penalties & miscellaneous charges</p>
               </div>
-              <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-purple-600 transition-colors shrink-0" />
+              <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-primary transition-colors shrink-0" />
             </button>
 
             {/* 3. Lease Invoice Card */}
             <button
               onClick={() => setSelectedMenuToast('Lease Invoice')}
-              className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:border-blue-300 transition-all text-left group cursor-pointer border border-slate-200/80 active:scale-[0.99]"
+              className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:border-primary/40 transition-all text-left group cursor-pointer border border-slate-200/80 active:scale-[0.99]"
             >
-              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
                 <House size={24} weight="fill" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-bold text-slate-900 text-base mb-0.5">Lease Invoice</h3>
                 <p className="text-xs text-slate-500 font-medium">Unit rental fee payments</p>
               </div>
-              <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-blue-600 transition-colors shrink-0" />
+              <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-primary transition-colors shrink-0" />
             </button>
           </div>
 
