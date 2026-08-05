@@ -311,8 +311,8 @@ function getInvoiceNumber(invoice: { id: string; month: string; unitNumber: stri
 function ReadyStatusBadge({ status }: { status: ReadyInvoice['status'] }) {
   const isZero = status === 'Zero amount';
   return (
-    <span className={`inline-block w-fit px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
-      isZero ? 'bg-red-500 text-white' : 'bg-emerald-100 text-emerald-700'
+    <span className={`inline-block w-fit px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-white ${
+      isZero ? 'bg-red-500' : 'bg-[#22c55e]'
     }`}>
       {isZero ? 'Zero Amount' : 'Ready to Send'}
     </span>
@@ -2035,7 +2035,7 @@ const InvoiceStatusBadge = ({ status }: { status: SentInvoice['status'] }) => {
   let colorClass = '';
   switch (status) {
     case 'Paid':
-      colorClass = 'bg-emerald-100 text-emerald-700';
+      colorClass = 'bg-[#22c55e] text-white';
       break;
     case 'Unpaid':
       colorClass = 'bg-amber-500 text-white';
