@@ -687,18 +687,8 @@ export default function App() {
         <div className="flex flex-col h-full bg-background relative">
           {/* Header */}
           <div className="bg-white pb-0 border-b border-slate-100 shrink-0">
-            {/* Status Bar */}
-            <div className="flex justify-between items-center px-5 py-3.5 text-slate-800">
-              <span className="text-[14px] font-bold tracking-tight">9:41</span>
-              <div className="flex items-center gap-1.5">
-                <CellSignalFull size={16} weight="fill" />
-                <WifiHigh size={16} weight="bold" />
-                <BatteryFull size={20} weight="fill" />
-              </div>
-            </div>
-
             {/* Title Bar */}
-            <div className="flex items-center px-5 my-6 relative justify-center">
+            <div className="flex items-center px-5 my-5 relative justify-center">
               <button className="absolute left-5 p-1 -ml-1 text-slate-700 hover:bg-slate-100 rounded-full transition-colors">
                 <CaretLeft size={24} weight="bold" />
               </button>
@@ -770,18 +760,8 @@ export default function App() {
         <>
       {/* Header & Tabs */}
       <header className="bg-white pb-0 border-b border-slate-100 z-10 shrink-0">
-        {/* Status Bar */}
-        <div className="flex justify-between items-center px-5 py-3.5 text-slate-800">
-          <span className="text-[14px] font-bold tracking-tight">9:41</span>
-          <div className="flex items-center gap-1.5">
-            <CellSignalFull size={16} weight="fill" />
-            <WifiHigh size={16} weight="bold" />
-            <BatteryFull size={20} weight="fill" />
-          </div>
-        </div>
-
         {/* Title Bar */}
-        <div className="flex items-center px-5 my-6 relative justify-center">
+        <div className="flex items-center px-5 my-5 relative justify-center">
           <button onClick={() => setCurrentPage('menu')} className="absolute left-5 p-1 -ml-1 text-slate-700 hover:bg-slate-100 rounded-full transition-colors">
             <CaretLeft size={24} weight="bold" />
           </button>
@@ -1284,14 +1264,6 @@ export default function App() {
         <div className="absolute inset-0 z-40 bg-background flex flex-col animate-in slide-in-from-right duration-300">
           {/* Header */}
           <div className="bg-white shrink-0">
-            <div className="flex justify-between items-center px-5 py-3.5 text-slate-800">
-              <span className="text-[14px] font-bold tracking-tight">9:41</span>
-              <div className="flex items-center gap-1.5">
-                <CellSignalFull size={16} weight="fill" />
-                <WifiHigh size={16} weight="bold" />
-                <BatteryFull size={20} weight="fill" />
-              </div>
-            </div>
             <div className="flex items-center px-5 my-5 relative justify-center">
               <button onClick={() => setSelectedInvoice(null)} className="absolute left-5 p-1 -ml-1 text-slate-700 hover:bg-slate-100 rounded-full transition-colors">
                 <CaretLeft size={24} weight="bold" />
