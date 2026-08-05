@@ -1367,7 +1367,7 @@ export default function App() {
                   <MagnifyingGlass size={18} weight="bold" />
                 </div>
               </div>
-              <div className="px-4 pt-4 pb-1 flex flex-col gap-3">
+              <div className="px-4 pt-4 pb-4 flex flex-col gap-3">
                 <h3 className="font-bold text-slate-900 text-base">Electricity Usage</h3>
                 {/* Usage Row */}
                 <div className="flex items-center gap-3">
@@ -1397,7 +1397,7 @@ export default function App() {
                 </div>
               </div>
               {/* Full-width Blue Info Banner */}
-              <div className="mt-3 bg-blue-500 text-white text-xs font-medium px-4 py-3 flex items-center gap-2">
+              <div className="bg-blue-500 text-white text-xs font-medium px-4 py-3 flex items-center gap-2">
                 <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center shrink-0">
                   <span className="text-[11px] font-bold">i</span>
                 </div>
@@ -1451,7 +1451,7 @@ export default function App() {
                   <MagnifyingGlass size={18} weight="bold" />
                 </div>
               </div>
-              <div className="px-4 pt-4 pb-1 flex flex-col gap-3">
+              <div className="px-4 pt-4 pb-4 flex flex-col gap-3">
                 <h3 className="font-bold text-slate-900 text-base">Water Usage</h3>
                 {/* Usage Row */}
                 <div className="flex items-center gap-3">
@@ -1481,7 +1481,7 @@ export default function App() {
                 </div>
               </div>
               {/* Full-width Blue Info Banner */}
-              <div className="mt-3 bg-blue-500 text-white text-xs font-medium px-4 py-3 flex items-center gap-2">
+              <div className="bg-blue-500 text-white text-xs font-medium px-4 py-3 flex items-center gap-2">
                 <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center shrink-0">
                   <span className="text-[11px] font-bold">i</span>
                 </div>
