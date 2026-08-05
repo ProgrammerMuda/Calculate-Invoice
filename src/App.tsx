@@ -5,6 +5,8 @@ import readyEmptyIllustration from '@/imports/Ready_empty_illustration.png';
 import sendIllustration from '@/imports/Send_illustration.png';
 import deleteIllustration from '@/imports/Delete_illustration.png';
 import iconInvoice from '@/imports/Icon_invoice-1.png';
+import electricMeterPhoto from '@/imports/ChatGPT_Image_3_Agu_2026__17.12.18.png';
+import waterMeterPhoto from '@/imports/ChatGPT_Image_3_Agu_2026__17.26.44.png';
 import {
   MagnifyingGlass,
   Funnel,
@@ -1279,98 +1281,262 @@ export default function App() {
       
       {/* Invoice Detail Screen */}
       {(selectedInvoice || isClosingInvoiceDetail) && selectedInvoice && (
-        <div className={`absolute inset-0 z-40 bg-background flex flex-col transition-transform duration-300 ease-out transform ${
+        <div className={`absolute inset-0 z-40 bg-[#f8fafc] flex flex-col transition-transform duration-300 ease-out transform ${
           isClosingInvoiceDetail ? 'translate-y-full' : 'translate-y-0'
         }`}>
           {/* Header */}
-          <div className="bg-white shrink-0">
+          <div className="bg-white shrink-0 border-b border-slate-100">
             <div className="flex items-center px-5 my-5 relative justify-center">
               <button onClick={() => handleCloseInvoiceDetail()} className="absolute left-5 p-1 -ml-1 text-slate-700 hover:bg-slate-100 rounded-full transition-colors">
                 <CaretLeft size={24} weight="bold" />
               </button>
-              <h1 className="text-lg font-bold text-slate-800">Invoice Detail</h1>
+              <h1 className="text-lg font-bold text-slate-800">Detail Invoice</h1>
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-4">
-            {/* Status Banner */}
-            <div className="bg-primary-light rounded-lg p-4 flex items-center justify-between">
-              <div>
-                <p className="text-[11px] font-semibold text-primary/70 uppercase tracking-wider mb-1">Status</p>
-                {selectedInvoice.isSent ? (
-                  <InvoiceStatusBadge status={selectedInvoice.sentStatus || 'Paid'} />
-                ) : (
-                  <ReadyStatusBadge status={selectedInvoice.status} />
-                )}
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-4 pb-28">
+            
+            {/* 1. Header Summary Card */}
+            <div className="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden flex flex-col">
+              <div className="p-4 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                    <Receipt size={22} weight="fill" />
+                  </div>
+                  <div className="min-w-0">
+                    <h2 className="font-bold text-slate-900 text-base leading-tight truncate">
+                      {formatFullMonth(selectedInvoice.month)} Bill
+                    </h2>
+                    <p className="text-[11px] font-mono font-medium text-slate-400 mt-0.5 truncate">
+                      {getInvoiceNumber(selectedInvoice)}
+                    </p>
+                  </div>
+                </div>
+                <div className="shrink-0">
+                  {selectedInvoice.isSent ? (
+                    <InvoiceStatusBadge status={selectedInvoice.sentStatus || 'Unpaid'} />
+                  ) : (
+                    <ReadyStatusBadge status={selectedInvoice.status} />
+                  )}
+                </div>
               </div>
-              <div className="text-right">
-                <p className="text-[11px] font-semibold text-primary/70 uppercase tracking-wider mb-1">Total Amount</p>
-                <p className="text-xl font-bold text-secondary">{formatCurrency(selectedInvoice.amount)}</p>
+
+              {/* Teal Banner Dates */}
+              <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-3 flex items-center justify-between text-white">
+                <div>
+                  <p className="text-[10px] text-emerald-100 font-medium">Issue Date</p>
+                  <p className="text-xs font-bold mt-0.5">01 July 2026</p>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">
+                  <CalendarBlank size={18} weight="fill" />
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] text-emerald-100 font-medium">Due Date</p>
+                  <p className="text-xs font-bold mt-0.5">02 August 2026</p>
+                </div>
               </div>
             </div>
 
-            {/* Unit Info */}
-            <div className="bg-white rounded-lg p-4 flex flex-col gap-3">
-              <p className="text-[12px] font-bold text-secondary uppercase tracking-wider">Unit Information</p>
-              <div className="h-px bg-slate-100" />
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <Receipt size={16} weight="fill" className="text-primary" />
-                  <span className="text-[13px] font-medium text-slate-500">Invoice No.</span>
-                </div>
-                <span className="text-[13px] font-mono font-bold text-slate-700 bg-slate-100/90 px-2 py-0.5 rounded">
-                  {getInvoiceNumber(selectedInvoice)}
-                </span>
+            {/* 2. Send To Tenant Card */}
+            <div className="bg-white rounded-2xl p-4 border border-slate-200/70 shadow-sm flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-slate-900 text-sm">Send To</h3>
+                <PaperPlaneRight size={16} weight="fill" className="text-emerald-500" />
               </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <House size={16} weight="fill" className="text-primary" />
-                  <span className="text-[13px] font-medium text-slate-500">Unit Number</span>
-                </div>
-                <span className="text-[14px] font-semibold text-secondary">{selectedInvoice.unitNumber}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <CalendarBlank size={16} weight="fill" className="text-primary" />
-                  <span className="text-[13px] font-medium text-slate-500">Billing Period</span>
-                </div>
-                <span className="text-[14px] font-semibold text-secondary">{formatFullMonth(selectedInvoice.month)}</span>
+              <div className="bg-slate-50/80 rounded-xl p-3.5 border border-slate-100 flex flex-col gap-1.5 text-xs">
+                <p className="font-bold text-emerald-600 text-sm">Akmal Rifqi</p>
+                <p className="text-slate-600 font-medium leading-relaxed">
+                  NT Tower, Tower 1 Unit {selectedInvoice.unitNumber} Jawa Barat, 17145
+                </p>
+                <p className="text-slate-400">akmalrifqi@gmail.com</p>
+                <p className="text-slate-400">0821991911</p>
               </div>
             </div>
 
-            {/* Charge Breakdown */}
-            <div className="bg-white rounded-lg p-4 flex flex-col gap-3">
-              <p className="text-[12px] font-bold text-secondary uppercase tracking-wider">Charge Breakdown</p>
-              <div className="h-px bg-slate-100" />
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-500 flex items-center justify-center">
-                    <Lightning size={14} weight="fill" />
-                  </div>
-                  <span className="text-[13px] font-medium text-slate-500">Electricity</span>
+            {/* 3. Electricity Meter Reading Photo & Card */}
+            <div className="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden flex flex-col">
+              <div className="relative w-full h-44 bg-slate-900 overflow-hidden">
+                <img src={electricMeterPhoto} alt="Electricity Meter" className="w-full h-full object-cover" />
+                <div className="absolute bottom-3 right-3 w-8 h-8 rounded-lg bg-black/60 backdrop-blur-sm flex items-center justify-center text-white">
+                  <MagnifyingGlass size={16} weight="bold" />
                 </div>
-                <span className="text-[14px] font-semibold text-secondary">{formatCurrency(Math.round(selectedInvoice.amount * 0.7))}</span>
               </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-500 flex items-center justify-center">
-                    <Drop size={14} weight="fill" />
+              <div className="p-4 flex flex-col gap-3">
+                <h3 className="font-bold text-slate-900 text-sm">Electricity Usage</h3>
+                <div className="flex items-center justify-between text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <div className="text-center">
+                    <p className="text-[10px] text-slate-400 font-medium uppercase">Previous</p>
+                    <p className="font-bold text-slate-800 text-sm mt-0.5">500</p>
                   </div>
-                  <span className="text-[13px] font-medium text-slate-500">Water</span>
+                  <div className="w-6 h-6 rounded-md bg-slate-200/60 flex items-center justify-center text-slate-500">
+                    <CaretRight size={14} weight="bold" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[10px] text-slate-400 font-medium uppercase">Current</p>
+                    <p className="font-bold text-slate-800 text-sm mt-0.5">580</p>
+                  </div>
+                  <div className="w-6 h-6 rounded-md bg-slate-200/60 flex items-center justify-center text-slate-500">
+                    <CaretRight size={14} weight="bold" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[10px] text-slate-400 font-medium uppercase">Total</p>
+                    <p className="font-bold text-emerald-600 text-sm mt-0.5">80</p>
+                  </div>
                 </div>
-                <span className="text-[14px] font-semibold text-secondary">{formatCurrency(Math.round(selectedInvoice.amount * 0.3))}</span>
-              </div>
-              <div className="h-px bg-slate-100" />
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-bold text-secondary">Total</span>
-                <span className="text-[15px] font-bold text-primary">{formatCurrency(selectedInvoice.amount)}</span>
+                <div className="bg-blue-500 text-white text-xs font-medium p-2.5 rounded-xl flex items-center gap-2">
+                  <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">i</span>
+                  <span>The unit of measurement is (KwH)</span>
+                </div>
               </div>
             </div>
+
+            {/* 4. Electricity Bill Table */}
+            <div className="bg-white rounded-2xl p-4 border border-slate-200/70 shadow-sm flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-slate-900 text-sm">Electricity Bill</h3>
+                <Lightning size={18} weight="fill" className="text-amber-500" />
+              </div>
+              <div className="flex flex-col text-xs">
+                <div className="grid grid-cols-3 text-slate-400 font-medium pb-2 border-b border-slate-100 text-[11px]">
+                  <span>Item</span>
+                  <span className="text-center">Price</span>
+                  <span className="text-right">Total</span>
+                </div>
+                {/* Cost Row */}
+                <div className="grid grid-cols-3 py-2.5 border-b border-slate-100">
+                  <div>
+                    <p className="font-semibold text-slate-800">Cost</p>
+                    <p className="text-[10px] text-slate-400">QTY: 80 KwH</p>
+                  </div>
+                  <span className="text-center font-medium text-slate-600 self-center">Rp 500.000,00</span>
+                  <span className="text-right font-semibold text-slate-900 self-center">Rp 4.000.000,00</span>
+                </div>
+                {/* PPJ Row */}
+                <div className="grid grid-cols-3 py-2.5 border-b border-slate-100">
+                  <div>
+                    <p className="font-semibold text-slate-800">PPJ</p>
+                    <p className="text-[10px] text-slate-400">QTY: 3%</p>
+                  </div>
+                  <span className="text-center font-medium text-slate-600 self-center">Rp 3.900,00</span>
+                  <span className="text-right font-semibold text-slate-900 self-center">Rp 3.900,00</span>
+                </div>
+                {/* Total Row */}
+                <div className="flex justify-between items-center pt-3 font-bold">
+                  <span className="text-slate-800">Total</span>
+                  <span className="text-emerald-600">Rp 4.003.900,00</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 5. Water Meter Reading Photo & Card */}
+            <div className="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden flex flex-col">
+              <div className="relative w-full h-44 bg-slate-900 overflow-hidden">
+                <img src={waterMeterPhoto} alt="Water Meter" className="w-full h-full object-cover" />
+                <div className="absolute bottom-3 right-3 w-8 h-8 rounded-lg bg-black/60 backdrop-blur-sm flex items-center justify-center text-white">
+                  <MagnifyingGlass size={16} weight="bold" />
+                </div>
+              </div>
+              <div className="p-4 flex flex-col gap-3">
+                <h3 className="font-bold text-slate-900 text-sm">Water Usage</h3>
+                <div className="flex items-center justify-between text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <div className="text-center">
+                    <p className="text-[10px] text-slate-400 font-medium uppercase">Previous</p>
+                    <p className="font-bold text-slate-800 text-sm mt-0.5">300</p>
+                  </div>
+                  <div className="w-6 h-6 rounded-md bg-slate-200/60 flex items-center justify-center text-slate-500">
+                    <CaretRight size={14} weight="bold" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[10px] text-slate-400 font-medium uppercase">Current</p>
+                    <p className="font-bold text-slate-800 text-sm mt-0.5">320</p>
+                  </div>
+                  <div className="w-6 h-6 rounded-md bg-slate-200/60 flex items-center justify-center text-slate-500">
+                    <CaretRight size={14} weight="bold" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[10px] text-slate-400 font-medium uppercase">Total</p>
+                    <p className="font-bold text-emerald-600 text-sm mt-0.5">20</p>
+                  </div>
+                </div>
+                <div className="bg-blue-500 text-white text-xs font-medium p-2.5 rounded-xl flex items-center gap-2">
+                  <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">i</span>
+                  <span>The unit of measurement is (M³)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 6. Water Bill Table */}
+            <div className="bg-white rounded-2xl p-4 border border-slate-200/70 shadow-sm flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-slate-900 text-sm">Water Bill</h3>
+                <Drop size={18} weight="fill" className="text-blue-500" />
+              </div>
+              <div className="flex flex-col text-xs">
+                <div className="grid grid-cols-3 text-slate-400 font-medium pb-2 border-b border-slate-100 text-[11px]">
+                  <span>Item</span>
+                  <span className="text-center">Price</span>
+                  <span className="text-right">Total</span>
+                </div>
+                {/* Cost Row */}
+                <div className="grid grid-cols-3 py-2.5 border-b border-slate-100">
+                  <div>
+                    <p className="font-semibold text-slate-800">Cost</p>
+                    <p className="text-[10px] text-slate-400">QTY: 20 M³</p>
+                  </div>
+                  <span className="text-center font-medium text-slate-600 self-center">Rp 12.000,00</span>
+                  <span className="text-right font-semibold text-slate-900 self-center">Rp 240.000,00</span>
+                </div>
+                {/* Total Row */}
+                <div className="flex justify-between items-center pt-3 font-bold">
+                  <span className="text-slate-800">Total</span>
+                  <span className="text-emerald-600">Rp 240.000,00</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 7. Bill Details Summary Card */}
+            <div className="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden flex flex-col">
+              <div className="p-4 flex flex-col gap-2.5">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="font-bold text-slate-900 text-sm">Bill Details</h3>
+                  <Receipt size={18} weight="fill" className="text-emerald-500" />
+                </div>
+                <div className="flex justify-between text-xs text-slate-500 font-medium">
+                  <span>Total Bill Electricity</span>
+                  <span className="font-semibold text-slate-800">Rp 4.003.900,00</span>
+                </div>
+                <div className="flex justify-between text-xs text-slate-500 font-medium">
+                  <span>Total Bill Water</span>
+                  <span className="font-semibold text-slate-800">Rp 240.000,00</span>
+                </div>
+                <div className="flex justify-between text-xs text-slate-500 font-medium">
+                  <span>Admin</span>
+                  <span className="font-semibold text-slate-800">Rp 5.000,00</span>
+                </div>
+                <div className="flex justify-between text-xs text-slate-500 font-medium">
+                  <span>PPN 11%</span>
+                  <span className="font-semibold text-slate-800">Rp 467.379,00</span>
+                </div>
+              </div>
+
+              {/* Dark Grand Total Bar */}
+              <div className="bg-slate-900 text-white p-4 flex justify-between items-center">
+                <span className="font-bold text-sm">Total Invoice</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-base">
+                    {selectedInvoice.amount > 0 ? formatCurrency(selectedInvoice.amount) : 'Rp 4.716.279,00'}
+                  </span>
+                  <Receipt size={16} weight="bold" className="text-slate-400" />
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          {/* Bottom Actions */}
-          <div className="p-5 bg-white border-t border-slate-100 flex flex-col gap-2.5">
-            {!selectedInvoice.isSent && selectedInvoice.status !== 'Zero amount' && (
+          {/* Sticky Bottom Actions */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200/80 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] z-20 flex gap-3">
+            {!selectedInvoice.isSent && selectedInvoice.status !== 'Zero amount' ? (
               <button
                 onClick={() => {
                   const targetId = selectedInvoice.id;
@@ -1379,30 +1545,29 @@ export default function App() {
                     setModalState('send');
                   });
                 }}
-                className="w-full h-12 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors"
+                className="w-full h-12 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors text-base shadow-sm"
               >
-                <PaperPlaneRight size={18} weight="fill" />
+                <PaperPlaneRight size={20} weight="fill" />
                 Send to tenant
               </button>
+            ) : (
+              <button
+                onClick={() => {
+                  const targetUnit = selectedInvoice.unitNumber;
+                  const targetId = selectedInvoice.id;
+                  const isSent = selectedInvoice.isSent;
+                  handleCloseInvoiceDetail(() => {
+                    setItemToDelete(targetUnit);
+                    if (isSent) setSentToDeleteId(targetId);
+                    setModalState('delete');
+                  });
+                }}
+                className="w-full h-12 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors text-base shadow-sm"
+              >
+                <Trash size={20} weight="fill" />
+                Delete Invoice
+              </button>
             )}
-            <button
-              onClick={() => {
-                const targetUnit = selectedInvoice.unitNumber;
-                const targetId = selectedInvoice.id;
-                const isSent = selectedInvoice.isSent;
-                handleCloseInvoiceDetail(() => {
-                  setItemToDelete(targetUnit);
-                  if (isSent) {
-                    setSentToDeleteId(targetId);
-                  }
-                  setModalState('delete');
-                });
-              }}
-              className="w-full h-12 flex items-center justify-center gap-2 border border-red-200 text-red-500 font-bold rounded-lg hover:bg-red-50 transition-colors text-sm"
-            >
-              <Trash size={18} weight="fill" />
-              Delete Invoice
-            </button>
           </div>
         </div>
       )}
