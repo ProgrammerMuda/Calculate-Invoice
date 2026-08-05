@@ -719,12 +719,7 @@ export default function App() {
                 <CalendarBlank size={24} weight="fill" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <h3 className="font-bold text-slate-900 text-base">Monthly Invoice</h3>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">
-                    Active
-                  </span>
-                </div>
+                <h3 className="font-bold text-slate-900 text-base mb-0.5">Monthly Invoice</h3>
                 <p className="text-xs text-slate-500 font-medium">Electric & water utility bill calculations</p>
               </div>
               <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-primary transition-colors shrink-0" />
@@ -739,12 +734,7 @@ export default function App() {
                 <Receipt size={24} weight="fill" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <h3 className="font-bold text-slate-900 text-base">Other Invoice</h3>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-700">
-                    Coming Soon
-                  </span>
-                </div>
+                <h3 className="font-bold text-slate-900 text-base mb-0.5">Other Invoice</h3>
                 <p className="text-xs text-slate-500 font-medium">Ad-hoc fees, penalties & miscellaneous charges</p>
               </div>
               <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-purple-600 transition-colors shrink-0" />
@@ -759,12 +749,7 @@ export default function App() {
                 <House size={24} weight="fill" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <h3 className="font-bold text-slate-900 text-base">Lease Invoice</h3>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700">
-                    Coming Soon
-                  </span>
-                </div>
+                <h3 className="font-bold text-slate-900 text-base mb-0.5">Lease Invoice</h3>
                 <p className="text-xs text-slate-500 font-medium">Unit rental fees, service charges & sinking fund</p>
               </div>
               <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-blue-600 transition-colors shrink-0" />
