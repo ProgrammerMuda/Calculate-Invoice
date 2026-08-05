@@ -320,6 +320,8 @@ function ReadyStatusBadge({ status }: { status: ReadyInvoice['status'] }) {
 }
 
 export default function App() {
+  const [currentPage, setCurrentPage] = useState<'menu' | 'monthly'>('menu');
+  const [selectedMenuToast, setSelectedMenuToast] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('draft');
   const [searchQuery, setSearchQuery] = useState('');
   const [drafts, setDrafts] = useState<DraftUnit[]>(mockDrafts);
@@ -681,7 +683,106 @@ export default function App() {
 
   return (
     <div className="flex flex-col h-screen bg-background text-secondary max-w-md mx-auto relative overflow-hidden shadow-2xl ring-1 ring-black/5">
-      
+      {currentPage === 'menu' ? (
+        <div className="flex flex-col h-full bg-background relative">
+          {/* Header */}
+          <div className="bg-white px-5 pt-3.5 pb-6 border-b border-slate-100 shrink-0">
+            {/* Status Bar */}
+            <div className="flex justify-between items-center py-2 mb-4 text-slate-800">
+              <span className="text-[14px] font-bold tracking-tight">9:41</span>
+              <div className="flex items-center gap-1.5">
+                <CellSignalFull size={16} weight="fill" />
+                <WifiHigh size={16} weight="bold" />
+                <BatteryFull size={20} weight="fill" />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mb-2">
+              <h1 className="text-xl font-bold text-slate-900">Calculate Invoice</h1>
+              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                <Receipt size={18} weight="fill" />
+              </div>
+            </div>
+            <p className="text-xs text-slate-500 font-medium">Choose an invoice category to start calculation</p>
+          </div>
+
+          {/* Menu Options List */}
+          <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-3.5">
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Invoice Category</p>
+
+            {/* 1. Monthly Invoice Card */}
+            <button
+              onClick={() => setCurrentPage('monthly')}
+              className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:border-primary/40 transition-all text-left group cursor-pointer border border-slate-200/80 active:scale-[0.99]"
+            >
+              <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                <CalendarBlank size={24} weight="fill" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <h3 className="font-bold text-slate-900 text-base">Monthly Invoice</h3>
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">
+                    Active
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 font-medium">Electric & water utility bill calculations</p>
+              </div>
+              <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-primary transition-colors shrink-0" />
+            </button>
+
+            {/* 2. Other Invoice Card */}
+            <button
+              onClick={() => setSelectedMenuToast('Other Invoice')}
+              className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:border-purple-300 transition-all text-left group cursor-pointer border border-slate-200/80 active:scale-[0.99]"
+            >
+              <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                <Receipt size={24} weight="fill" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <h3 className="font-bold text-slate-900 text-base">Other Invoice</h3>
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-700">
+                    Coming Soon
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 font-medium">Ad-hoc fees, penalties & miscellaneous charges</p>
+              </div>
+              <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-purple-600 transition-colors shrink-0" />
+            </button>
+
+            {/* 3. Lease Invoice Card */}
+            <button
+              onClick={() => setSelectedMenuToast('Lease Invoice')}
+              className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:border-blue-300 transition-all text-left group cursor-pointer border border-slate-200/80 active:scale-[0.99]"
+            >
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <House size={24} weight="fill" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <h3 className="font-bold text-slate-900 text-base">Lease Invoice</h3>
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700">
+                    Coming Soon
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 font-medium">Unit rental fees, service charges & sinking fund</p>
+              </div>
+              <CaretRight size={18} weight="bold" className="text-slate-400 group-hover:text-blue-600 transition-colors shrink-0" />
+            </button>
+          </div>
+
+          {/* Toast Notification */}
+          {selectedMenuToast && (
+            <div className="absolute bottom-6 left-6 right-6 z-50 bg-slate-900/90 backdrop-blur-md text-white text-xs font-semibold px-4 py-3 rounded-xl flex items-center justify-between shadow-xl animate-in fade-in slide-in-from-bottom-3 duration-200">
+              <span>{selectedMenuToast} will be available in the next update.</span>
+              <button onClick={() => setSelectedMenuToast(null)} className="ml-2 text-slate-400 hover:text-white">
+                <X size={14} weight="bold" />
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <>
       {/* Header & Tabs */}
       <header className="bg-white pb-0 border-b border-slate-100 z-10 shrink-0">
         {/* Status Bar */}
@@ -696,7 +797,7 @@ export default function App() {
 
         {/* Title Bar */}
         <div className="flex items-center px-5 my-6 relative justify-center">
-          <button className="absolute left-5 p-1 -ml-1 text-slate-700 hover:bg-slate-100 rounded-full transition-colors">
+          <button onClick={() => setCurrentPage('menu')} className="absolute left-5 p-1 -ml-1 text-slate-700 hover:bg-slate-100 rounded-full transition-colors">
             <CaretLeft size={24} weight="bold" />
           </button>
           <h1 className="text-lg font-bold text-slate-800">Monthly Invoice</h1>
@@ -1894,6 +1995,8 @@ export default function App() {
           setModalState('none');
         }}
       />
+        </>
+      )}
 
 
 
