@@ -3,6 +3,7 @@ import calculatorIllustration from '@/imports/Illustatorrrr.png';
 import noMeterIllustration from '@/imports/Draft_empty_illustration.png';
 import readyEmptyIllustration from '@/imports/Ready_empty_illustration.png';
 import sendIllustration from '@/imports/Send_illustration.png';
+import deleteIllustration from '@/imports/Delete_illustration.png';
 import iconInvoice from '@/imports/Icon_invoice-1.png';
 import {
   MagnifyingGlass,
@@ -52,6 +53,8 @@ interface ReadyInvoice {
   status: 'Ready to sent' | 'Zero amount';
   amount: number;
   invoiceNumber?: string;
+  isSent?: boolean;
+  sentStatus?: SentInvoice['status'];
 }
 
 interface SentInvoice {
@@ -321,12 +324,14 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [drafts, setDrafts] = useState<DraftUnit[]>(mockDrafts);
   const [readyInvoices, setReadyInvoices] = useState<ReadyInvoice[]>(initialReady);
+  const [sentToDeleteId, setSentToDeleteId] = useState<string | null>(null);
   const [successCount, setSuccessCount] = useState(0);
   const [selectedInvoice, setSelectedInvoice] = useState<ReadyInvoice | null>(null);
   
   // Selection states
   const [selectedDrafts, setSelectedDrafts] = useState<Set<string>>(new Set());
   const [selectedReady, setSelectedReady] = useState<Set<string>>(new Set());
+  const [selectedSent, setSelectedSent] = useState<Set<string>>(new Set());
   
   // Filter states
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -442,10 +447,27 @@ export default function App() {
     }
   };
 
+  const toggleSentSelection = (id: string) => {
+    const newSet = new Set(selectedSent);
+    if (newSet.has(id)) newSet.delete(id);
+    else newSet.add(id);
+    setSelectedSent(newSet);
+  };
+
+  const toggleAllSent = () => {
+    const allSelected = filteredSent.length > 0 && filteredSent.every(s => selectedSent.has(s.id));
+    if (allSelected) {
+      setSelectedSent(new Set());
+    } else {
+      setSelectedSent(new Set(filteredSent.map(s => s.id)));
+    }
+  };
+
   const handleTabChange = (tab: TabType) => {
     setActiveTab(tab);
     setFilterStatuses(new Set()); // Reset status filters on tab change
     setSearchQuery('');
+    setSelectedSent(new Set());
   };
 
   const removeFilterStatus = (status: string) => {
@@ -989,69 +1011,103 @@ export default function App() {
 
         {/* TAB: SENT */}
         {activeTab === 'sent' && (
-          <div className="px-5 py-4 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
+            {filteredSent.length > 0 && (
+              <div className="sticky top-0 z-10 bg-primary-light flex justify-between items-center px-6 py-3 border-b border-primary/10">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <RoundedCheckbox
+                    checked={filteredSent.length > 0 && filteredSent.every(s => selectedSent.has(s.id))}
+                    onChange={toggleAllSent}
+                  />
+                  <span className="text-sm font-medium">Select all</span>
+                </label>
+                {selectedSent.size > 0 && (
+                  <span className="text-sm text-slate-500 font-medium">{selectedSent.size} invoices selected</span>
+                )}
+              </div>
+            )}
+
             {filteredSent.length === 0 && <EmptyState />}
-            {filteredSent.map(invoice => {
-              const invNo = getInvoiceNumber(invoice);
-              return (
-                <div
-                  key={invoice.id}
-                  className="bg-white rounded-lg overflow-hidden transition-all cursor-pointer"
-                >
-                  {/* Card Content */}
-                  <div className="p-3.5 flex flex-col gap-2.5">
-                    {/* Top Bar: Invoice Number + Status Badge */}
-                    <div className="flex items-center justify-between gap-2 pb-2 border-b border-slate-200/70">
-                      <span className="text-[11px] font-mono font-bold text-slate-600 bg-slate-100/90 px-2 py-0.5 rounded tracking-tight truncate">
-                        {invNo}
-                      </span>
-                      <InvoiceStatusBadge status={invoice.status} />
+            <div className="px-5 flex flex-col gap-4 pb-4">
+              {filteredSent.map(invoice => {
+                const invNo = getInvoiceNumber(invoice);
+                const checked = selectedSent.has(invoice.id);
+                return (
+                  <div
+                    key={invoice.id}
+                    onClick={() => setSelectedInvoice({
+                      id: invoice.id,
+                      unitNumber: invoice.unitNumber,
+                      month: invoice.month,
+                      status: 'Ready to sent',
+                      amount: invoice.amount,
+                      invoiceNumber: invNo,
+                      isSent: true,
+                      sentStatus: invoice.status,
+                    })}
+                    className="bg-white rounded-lg overflow-hidden transition-all cursor-pointer"
+                  >
+                    {/* Card Content */}
+                    <div className="p-3.5 flex flex-col gap-2.5">
+                      {/* Top Bar: Checkbox + Invoice Number + Status Badge */}
+                      <div className="flex items-center justify-between gap-2 pb-2 border-b border-slate-200/70">
+                        <div className="flex items-center gap-2 min-w-0" onPointerDown={e => e.stopPropagation()} onClick={e => e.stopPropagation()}>
+                          <RoundedCheckbox
+                            checked={checked}
+                            onChange={() => toggleSentSelection(invoice.id)}
+                          />
+                          <span className="text-[11px] font-mono font-bold text-slate-600 bg-slate-100/90 px-2 py-0.5 rounded tracking-tight truncate">
+                            {invNo}
+                          </span>
+                        </div>
+                        <InvoiceStatusBadge status={invoice.status} />
+                      </div>
+
+                      {/* Main Content: Icon Thumbnail + Unit/Month Info + Amount + Caret */}
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl shrink-0 overflow-hidden">
+                          <img src={iconInvoice} alt="invoice" className="w-full h-full object-cover" />
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-slate-900 text-sm truncate">Unit {invoice.unitNumber}</h3>
+                          <p className="text-[13px] text-slate-500 font-semibold">{formatFullMonth(invoice.month)} Bill</p>
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="font-bold text-sm text-slate-900">
+                            {formatCurrency(invoice.amount)}
+                          </span>
+                          <CaretRight size={14} weight="bold" className="text-slate-300" />
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Main Content: Icon Thumbnail + Unit/Month Info + Amount + Caret */}
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl shrink-0 overflow-hidden">
-                        <img src={iconInvoice} alt="invoice" className="w-full h-full object-cover" />
-                      </div>
-
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-slate-900 text-sm truncate">Unit {invoice.unitNumber}</h3>
-                        <p className="text-[13px] text-slate-500 font-semibold">{formatFullMonth(invoice.month)} Bill</p>
-                      </div>
-
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className="font-bold text-sm text-slate-900">
-                          {formatCurrency(invoice.amount)}
+                    {/* Due Date / Overdue Footer Bar */}
+                    {invoice.status === 'Overdue' ? (
+                      <div className="flex items-center gap-2 bg-red-50 border-t border-red-100 px-4 py-2.5">
+                        <WarningCircle size={16} weight="fill" className="text-red-500 shrink-0" />
+                        <span className="text-red-700 text-[12px] font-bold">
+                          Overdue by {invoice.overdueDays ?? 15} days — Due: {invoice.dueDate}
                         </span>
-                        <CaretRight size={14} weight="bold" className="text-slate-300" />
                       </div>
-                    </div>
+                    ) : invoice.status === 'Paid' ? (
+                      <div className="flex items-center gap-2 bg-green-50 border-t border-green-100 px-4 py-2.5">
+                        <CheckCircle size={16} weight="fill" className="text-green-500 shrink-0" />
+                        <span className="text-green-700 text-[12px] font-medium">
+                          Paid on time — Due: {invoice.dueDate}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 bg-slate-50 border-t border-slate-100 px-4 py-2.5">
+                        <CalendarBlank size={16} weight="fill" className="text-slate-400 shrink-0" />
+                        <span className="text-slate-600 text-[12px] font-medium">Due Date: {invoice.dueDate}</span>
+                      </div>
+                    )}
                   </div>
-
-                  {/* Due Date / Overdue Footer Bar */}
-                  {invoice.status === 'Overdue' ? (
-                    <div className="flex items-center gap-2 bg-red-50 border-t border-red-100 px-4 py-2.5">
-                      <WarningCircle size={16} weight="fill" className="text-red-500 shrink-0" />
-                      <span className="text-red-700 text-[12px] font-bold">
-                        Overdue by {invoice.overdueDays ?? 15} days — Due: {invoice.dueDate}
-                      </span>
-                    </div>
-                  ) : invoice.status === 'Paid' ? (
-                    <div className="flex items-center gap-2 bg-green-50 border-t border-green-100 px-4 py-2.5">
-                      <CheckCircle size={16} weight="fill" className="text-green-500 shrink-0" />
-                      <span className="text-green-700 text-[12px] font-medium">
-                        Paid on time — Due: {invoice.dueDate}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2 bg-slate-50 border-t border-slate-100 px-4 py-2.5">
-                      <CalendarBlank size={16} weight="fill" className="text-slate-400 shrink-0" />
-                      <span className="text-slate-600 text-[12px] font-medium">Due Date: {invoice.dueDate}</span>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         )}
 
@@ -1123,6 +1179,18 @@ export default function App() {
         </div>
       )}
 
+      {activeTab === 'sent' && selectedSent.size > 0 && (
+        <div className="absolute bottom-0 left-0 right-0 p-5 bg-white border-t border-slate-100 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] flex flex-col gap-2.5 z-20">
+          <button
+            onClick={() => { setItemToDelete('selected-sent'); setModalState('delete'); }}
+            className="w-full h-12 flex items-center justify-center gap-2 border border-red-200 text-red-500 font-bold rounded-lg hover:bg-red-50 transition-colors text-sm"
+          >
+            <Trash size={18} weight="fill" />
+            Delete {selectedSent.size} Invoice{selectedSent.size > 1 ? 's' : ''}
+          </button>
+        </div>
+      )}
+
       {/* --- Overlays & Modals --- */}
       
       {/* Invoice Detail Screen */}
@@ -1151,9 +1219,11 @@ export default function App() {
             <div className="bg-primary-light rounded-lg p-4 flex items-center justify-between">
               <div>
                 <p className="text-[11px] font-semibold text-primary/70 uppercase tracking-wider mb-1">Status</p>
-                <span className={`text-[12px] font-bold px-2.5 py-1 rounded-lg ${selectedInvoice.status === 'Zero amount' ? 'bg-red-100 text-red-500' : 'bg-primary text-white'}`}>
-                  {selectedInvoice.status === 'Zero amount' ? 'Zero Amount' : 'Ready to Send'}
-                </span>
+                {selectedInvoice.isSent ? (
+                  <InvoiceStatusBadge status={selectedInvoice.sentStatus || 'Paid'} />
+                ) : (
+                  <ReadyStatusBadge status={selectedInvoice.status} />
+                )}
               </div>
               <div className="text-right">
                 <p className="text-[11px] font-semibold text-primary/70 uppercase tracking-wider mb-1">Total Amount</p>
@@ -1222,7 +1292,7 @@ export default function App() {
 
           {/* Bottom Actions */}
           <div className="p-5 bg-white border-t border-slate-100 flex flex-col gap-2.5">
-            {selectedInvoice.status !== 'Zero amount' && (
+            {!selectedInvoice.isSent && selectedInvoice.status !== 'Zero amount' && (
               <button
                 onClick={() => { setSelectedReady(new Set([selectedInvoice.id])); setSelectedInvoice(null); setModalState('send'); }}
                 className="w-full h-12 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors"
@@ -1232,7 +1302,14 @@ export default function App() {
               </button>
             )}
             <button
-              onClick={() => { setItemToDelete(selectedInvoice.unitNumber); setSelectedInvoice(null); setModalState('delete'); }}
+              onClick={() => {
+                setItemToDelete(selectedInvoice.unitNumber);
+                if (selectedInvoice.isSent) {
+                  setSentToDeleteId(selectedInvoice.id);
+                }
+                setSelectedInvoice(null);
+                setModalState('delete');
+              }}
               className="w-full h-12 flex items-center justify-center gap-2 border border-red-200 text-red-500 font-bold rounded-lg hover:bg-red-50 transition-colors text-sm"
             >
               <Trash size={18} weight="fill" />
@@ -1783,16 +1860,36 @@ export default function App() {
       <ConfirmModal 
         isOpen={modalState === 'delete'} 
         onClose={() => setModalState('none')}
-        icon={<Trash size={24} weight="fill" className="text-red-500" />}
-        iconBg="bg-red-100"
-        title={itemToDelete === 'selected' ? `Delete ${selectedReady.size} invoice${selectedReady.size > 1 ? 's' : ''}?` : 'Delete this invoice?'}
-        description={itemToDelete === 'selected'
-          ? `${selectedReady.size} selected invoice${selectedReady.size > 1 ? 's' : ''} will be deleted and must be recalculated from the Draft tab.`
-          : `Invoice for unit ${itemToDelete} will be deleted and must be recalculated from the Draft tab.`}
+        image={deleteIllustration}
+        title={
+          itemToDelete === 'selected-sent'
+            ? `Delete ${selectedSent.size} invoice${selectedSent.size > 1 ? 's' : ''}?`
+            : itemToDelete === 'selected'
+            ? `Delete ${selectedReady.size} invoice${selectedReady.size > 1 ? 's' : ''}?`
+            : 'Delete this invoice?'
+        }
+        description={
+          itemToDelete === 'selected-sent'
+            ? `${selectedSent.size} selected sent invoice${selectedSent.size > 1 ? 's' : ''} will be deleted.`
+            : itemToDelete === 'selected'
+            ? `${selectedReady.size} selected invoice${selectedReady.size > 1 ? 's' : ''} will be deleted and must be recalculated from the Draft tab.`
+            : `Invoice for unit ${itemToDelete} will be deleted.`
+        }
         confirmText="Yes, delete"
         confirmStyle="danger"
         onConfirm={() => {
-          if (itemToDelete === 'selected') setSelectedReady(new Set());
+          if (itemToDelete === 'selected-sent') {
+            setSentInvoices(prev => prev.filter(s => !selectedSent.has(s.id)));
+            setSelectedSent(new Set());
+          } else if (itemToDelete === 'selected') {
+            setSelectedReady(new Set());
+          } else if (sentToDeleteId) {
+            setSentInvoices(prev => prev.filter(s => s.id !== sentToDeleteId));
+            setSentToDeleteId(null);
+          } else {
+            setReadyInvoices(prev => prev.filter(r => r.unitNumber !== itemToDelete));
+            setSentInvoices(prev => prev.filter(s => s.unitNumber !== itemToDelete));
+          }
           setItemToDelete(null);
           setModalState('none');
         }}
