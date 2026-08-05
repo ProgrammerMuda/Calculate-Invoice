@@ -698,12 +698,12 @@ export default function App() {
             </div>
 
             <div className="flex items-center justify-between mb-2">
-              <h1 className="text-xl font-bold text-slate-900">Calculate Invoice</h1>
+              <h1 className="text-xl font-bold text-slate-900">Invoice</h1>
               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                 <Receipt size={18} weight="fill" />
               </div>
             </div>
-            <p className="text-xs text-slate-500 font-medium">Choose an invoice category to start calculation</p>
+            <p className="text-xs text-slate-500 font-medium">Choose an invoice category to proceed</p>
           </div>
 
           {/* Menu Options List */}
