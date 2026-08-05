@@ -1639,7 +1639,7 @@ export default function App() {
                       >
                         <div className="flex items-center gap-2">
                           <CheckCircle size={18} weight="fill" className={openAccordion === 'success' ? 'text-white' : 'text-green-500'} />
-                          <span className="text-sm font-bold">{successCount} unit berhasil</span>
+                          <span className="text-sm font-bold">{successCount} {successCount === 1 ? 'unit successful' : 'units successful'}</span>
                         </div>
                         <CaretRight
                           size={14}
@@ -1676,7 +1676,7 @@ export default function App() {
                       >
                         <div className="flex items-center gap-2">
                           <WarningCircle size={18} weight="fill" className={openAccordion === 'failed' ? 'text-white' : 'text-red-500'} />
-                          <span className="text-sm font-bold">{calcLogs.filter(l => l.status === 'error').length} unit gagal</span>
+                          <span className="text-sm font-bold">{calcLogs.filter(l => l.status === 'error').length} {calcLogs.filter(l => l.status === 'error').length === 1 ? 'unit failed' : 'units failed'}</span>
                         </div>
                         <CaretRight
                           size={14}
@@ -1825,7 +1825,7 @@ export default function App() {
                       >
                         <div className="flex items-center gap-2">
                           <CheckCircle size={18} weight="fill" className={openSendAccordion === 'success' ? 'text-white' : 'text-green-500'} />
-                          <span className="text-sm font-bold">{sendSuccessCount} invoice berhasil dikirim</span>
+                          <span className="text-sm font-bold">{sendSuccessCount} {sendSuccessCount === 1 ? 'invoice sent successfully' : 'invoices sent successfully'}</span>
                         </div>
                         <CaretRight
                           size={14}
@@ -1862,7 +1862,7 @@ export default function App() {
                       >
                         <div className="flex items-center gap-2">
                           <WarningCircle size={18} weight="fill" className={openSendAccordion === 'failed' ? 'text-white' : 'text-red-500'} />
-                          <span className="text-sm font-bold">{sendLogs.filter(l => l.status === 'error').length} invoice gagal dikirim</span>
+                          <span className="text-sm font-bold">{sendLogs.filter(l => l.status === 'error').length} {sendLogs.filter(l => l.status === 'error').length === 1 ? 'invoice failed to send' : 'invoices failed to send'}</span>
                         </div>
                         <CaretRight
                           size={14}
