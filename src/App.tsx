@@ -329,6 +329,16 @@ export default function App() {
   const [sentToDeleteId, setSentToDeleteId] = useState<string | null>(null);
   const [successCount, setSuccessCount] = useState(0);
   const [selectedInvoice, setSelectedInvoice] = useState<ReadyInvoice | null>(null);
+  const [isClosingInvoiceDetail, setIsClosingInvoiceDetail] = useState(false);
+
+  const handleCloseInvoiceDetail = (callback?: () => void) => {
+    setIsClosingInvoiceDetail(true);
+    setTimeout(() => {
+      setSelectedInvoice(null);
+      setIsClosingInvoiceDetail(false);
+      if (callback) callback();
+    }, 250);
+  };
   
   // Selection states
   const [selectedDrafts, setSelectedDrafts] = useState<Set<string>>(new Set());
@@ -1260,12 +1270,16 @@ export default function App() {
       {/* --- Overlays & Modals --- */}
       
       {/* Invoice Detail Screen */}
-      {selectedInvoice && (
-        <div className="absolute inset-0 z-40 bg-background flex flex-col animate-in slide-in-from-bottom duration-300">
+      {(selectedInvoice || isClosingInvoiceDetail) && selectedInvoice && (
+        <div className={`absolute inset-0 z-40 bg-background flex flex-col transition-all duration-300 ${
+          isClosingInvoiceDetail
+            ? 'animate-out fade-out slide-out-to-bottom duration-300'
+            : 'animate-in fade-in slide-in-from-bottom duration-300'
+        }`}>
           {/* Header */}
           <div className="bg-white shrink-0">
             <div className="flex items-center px-5 my-5 relative justify-center">
-              <button onClick={() => setSelectedInvoice(null)} className="absolute left-5 p-1 -ml-1 text-slate-700 hover:bg-slate-100 rounded-full transition-colors">
+              <button onClick={() => handleCloseInvoiceDetail()} className="absolute left-5 p-1 -ml-1 text-slate-700 hover:bg-slate-100 rounded-full transition-colors">
                 <CaretLeft size={24} weight="bold" />
               </button>
               <h1 className="text-lg font-bold text-slate-800">Invoice Detail</h1>
@@ -1352,7 +1366,13 @@ export default function App() {
           <div className="p-5 bg-white border-t border-slate-100 flex flex-col gap-2.5">
             {!selectedInvoice.isSent && selectedInvoice.status !== 'Zero amount' && (
               <button
-                onClick={() => { setSelectedReady(new Set([selectedInvoice.id])); setSelectedInvoice(null); setModalState('send'); }}
+                onClick={() => {
+                  const targetId = selectedInvoice.id;
+                  handleCloseInvoiceDetail(() => {
+                    setSelectedReady(new Set([targetId]));
+                    setModalState('send');
+                  });
+                }}
                 className="w-full h-12 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors"
               >
                 <PaperPlaneRight size={18} weight="fill" />
@@ -1361,12 +1381,16 @@ export default function App() {
             )}
             <button
               onClick={() => {
-                setItemToDelete(selectedInvoice.unitNumber);
-                if (selectedInvoice.isSent) {
-                  setSentToDeleteId(selectedInvoice.id);
-                }
-                setSelectedInvoice(null);
-                setModalState('delete');
+                const targetUnit = selectedInvoice.unitNumber;
+                const targetId = selectedInvoice.id;
+                const isSent = selectedInvoice.isSent;
+                handleCloseInvoiceDetail(() => {
+                  setItemToDelete(targetUnit);
+                  if (isSent) {
+                    setSentToDeleteId(targetId);
+                  }
+                  setModalState('delete');
+                });
               }}
               className="w-full h-12 flex items-center justify-center gap-2 border border-red-200 text-red-500 font-bold rounded-lg hover:bg-red-50 transition-colors text-sm"
             >
@@ -2046,15 +2070,52 @@ interface BottomSheetProps {
 }
 
 const BottomSheet = ({ isOpen, onClose, title, children }: BottomSheetProps) => {
-  if (!isOpen) return null;
+  const [isClosing, setIsClosing] = useState(false);
+  const [shouldRender, setShouldRender] = useState(isOpen);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      setIsClosing(false);
+    } else if (shouldRender) {
+      setIsClosing(true);
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+        setIsClosing(false);
+      }, 250);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      onClose();
+    }, 250);
+  };
+
+  if (!shouldRender) return null;
+
   return (
     <div className="absolute inset-0 z-50 flex flex-col justify-end">
-      <div className="absolute inset-0 bg-black/40 transition-opacity" onClick={onClose} />
-      <div className="bg-white w-full rounded-t-3xl p-6 relative z-10 animate-in slide-in-from-bottom duration-300 shadow-2xl">
+      <div 
+        className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${
+          isClosing ? 'opacity-0' : 'opacity-100'
+        }`} 
+        onClick={handleClose} 
+      />
+      <div 
+        className={`bg-white w-full rounded-t-3xl p-6 relative z-10 shadow-2xl transition-all duration-300 ${
+          isClosing
+            ? 'animate-out fade-out slide-out-to-bottom duration-300'
+            : 'animate-in fade-in slide-in-from-bottom duration-300'
+        }`} 
+        style={{maxHeight: '80vh', overflowY: 'auto'}}
+      >
         <div className="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6" />
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold">{title}</h2>
-          <button onClick={onClose} className="p-2 -mr-2 text-slate-400 hover:text-slate-600 rounded-full">
+          <button onClick={handleClose} className="p-2 -mr-2 text-slate-400 hover:text-slate-600 rounded-full">
             <X size={20} weight="bold" />
           </button>
         </div>
@@ -2078,11 +2139,47 @@ interface ConfirmModalProps {
 }
 
 const ConfirmModal = ({ isOpen, onClose, onConfirm, icon, iconBg, image, title, description, confirmText, confirmStyle = 'primary' }: ConfirmModalProps) => {
-  if (!isOpen) return null;
+  const [isClosing, setIsClosing] = useState(false);
+  const [shouldRender, setShouldRender] = useState(isOpen);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      setIsClosing(false);
+    } else if (shouldRender) {
+      setIsClosing(true);
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+        setIsClosing(false);
+      }, 250);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      onClose();
+    }, 250);
+  };
+
+  if (!shouldRender) return null;
+
   return (
     <div className="absolute inset-0 z-50 flex flex-col justify-end">
-      <div className="absolute inset-0 bg-black/40 transition-opacity" onClick={onClose} />
-      <div className="bg-white w-full rounded-t-3xl p-6 relative z-10 animate-in slide-in-from-bottom duration-300 pb-10">
+      <div 
+        className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${
+          isClosing ? 'opacity-0' : 'opacity-100'
+        }`} 
+        onClick={handleClose} 
+      />
+      <div 
+        className={`bg-white w-full rounded-t-3xl p-6 relative z-10 pb-10 shadow-2xl transition-all duration-300 ${
+          isClosing
+            ? 'animate-out fade-out slide-out-to-bottom duration-300'
+            : 'animate-in fade-in slide-in-from-bottom duration-300'
+        }`}
+      >
         <div className="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6" />
         <div className="flex flex-col items-center text-center gap-4">
           {image ? (
@@ -2098,13 +2195,16 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, icon, iconBg, image, title, 
           </div>
           <div className="flex gap-3 w-full mt-4">
             <button 
-              onClick={onClose}
+              onClick={handleClose}
               className="flex-1 py-3.5 border border-slate-300 text-slate-700 font-bold rounded-lg text-sm"
             >
               Cancel
             </button>
             <button 
-              onClick={onConfirm}
+              onClick={() => {
+                handleClose();
+                setTimeout(() => onConfirm(), 250);
+              }}
               className={`flex-1 py-3.5 font-bold rounded-lg text-sm text-white ${
                 confirmStyle === 'danger' ? 'bg-red-500 hover:bg-red-600' : 'bg-primary hover:bg-primary-dark'
               }`}
