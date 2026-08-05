@@ -441,19 +441,18 @@ export default function App() {
   };
 
   const toggleAllReady = () => {
-    const sendable = filteredReady.filter(r => r.status !== 'Zero amount');
-    const allSelected = sendable.length > 0 && sendable.every(r => selectedReady.has(r.id));
+    const allSelected = filteredReady.length > 0 && filteredReady.every(r => selectedReady.has(r.id));
     
     if (allSelected) {
       setSelectedReady(newSet => {
         const next = new Set(newSet);
-        sendable.forEach(r => next.delete(r.id));
+        filteredReady.forEach(r => next.delete(r.id));
         return next;
       });
     } else {
       setSelectedReady(newSet => {
         const next = new Set(newSet);
-        sendable.forEach(r => next.add(r.id));
+        filteredReady.forEach(r => next.add(r.id));
         return next;
       });
     }
@@ -1049,7 +1048,7 @@ export default function App() {
                 const card = (
                   <div
                     onClick={() => setSelectedInvoice(invoice)}
-                    className={`bg-white rounded-lg p-3.5 transition-all flex flex-col gap-2.5 cursor-pointer ${isZero ? 'opacity-60' : ''}`}
+                    className="bg-white rounded-lg p-3.5 transition-all flex flex-col gap-2.5 cursor-pointer"
                   >
                     {/* Top Bar: Checkbox + Invoice Number + Status Badge */}
                     <div className="flex items-center justify-between gap-2 pb-2 border-b border-slate-200/70">
@@ -1057,7 +1056,6 @@ export default function App() {
                         <RoundedCheckbox
                           checked={checked}
                           onChange={() => toggleReadySelection(invoice.id)}
-                          disabled={isZero}
                         />
                         <span className="text-[11px] font-mono font-bold text-slate-600 bg-slate-100/90 px-2 py-0.5 rounded tracking-tight truncate">
                           {invNo}
@@ -1230,22 +1228,32 @@ export default function App() {
                   className="h-12 px-5 flex items-center justify-center gap-2 border border-red-200 text-red-500 font-bold rounded-lg hover:bg-red-50 transition-colors text-sm shrink-0"
                 >
                   <Trash size={18} weight="fill" />
-                  Delete
+                  Delete ({selectedReady.size})
                 </button>
-                <button
-                  onClick={() => setModalState('send')}
-                  className="flex-1 h-12 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
-                >
-                  <PaperPlaneRight size={20} weight="fill" />
-                  Send ({selectedReady.size})
-                </button>
+                {readyInvoices.filter(r => selectedReady.has(r.id) && r.status !== 'Zero amount').length > 0 ? (
+                  <button
+                    onClick={() => setModalState('send')}
+                    className="flex-1 h-12 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
+                  >
+                    <PaperPlaneRight size={20} weight="fill" />
+                    Send ({readyInvoices.filter(r => selectedReady.has(r.id) && r.status !== 'Zero amount').length})
+                  </button>
+                ) : (
+                  <button
+                    disabled
+                    className="flex-1 h-12 bg-slate-200 text-slate-400 font-bold rounded-lg flex items-center justify-center gap-2 text-sm cursor-not-allowed"
+                  >
+                    <PaperPlaneRight size={20} weight="fill" />
+                    Cannot Send (Rp 0)
+                  </button>
+                )}
               </div>
             </div>
           ) : (
             <div className="p-5">
               <button
                 disabled
-                className="w-full h-12 bg-slate-200 text-slate-400 font-bold rounded-lg flex items-center justify-center gap-2 text-sm"
+                className="w-full h-12 bg-slate-200 text-slate-400 font-bold rounded-lg flex items-center justify-center gap-2 text-sm cursor-not-allowed"
               >
                 <PaperPlaneRight size={20} weight="fill" />
                 Send Invoice
@@ -1962,6 +1970,7 @@ export default function App() {
             setSentInvoices(prev => prev.filter(s => !selectedSent.has(s.id)));
             setSelectedSent(new Set());
           } else if (itemToDelete === 'selected') {
+            setReadyInvoices(prev => prev.filter(r => !selectedReady.has(r.id)));
             setSelectedReady(new Set());
           } else if (sentToDeleteId) {
             setSentInvoices(prev => prev.filter(s => s.id !== sentToDeleteId));
