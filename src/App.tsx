@@ -1271,10 +1271,8 @@ export default function App() {
       
       {/* Invoice Detail Screen */}
       {(selectedInvoice || isClosingInvoiceDetail) && selectedInvoice && (
-        <div className={`absolute inset-0 z-40 bg-background flex flex-col transition-all duration-300 ${
-          isClosingInvoiceDetail
-            ? 'animate-out fade-out slide-out-to-bottom duration-300'
-            : 'animate-in fade-in slide-in-from-bottom duration-300'
+        <div className={`absolute inset-0 z-40 bg-background flex flex-col transition-transform duration-300 ease-out transform ${
+          isClosingInvoiceDetail ? 'translate-y-full' : 'translate-y-0'
         }`}>
           {/* Header */}
           <div className="bg-white shrink-0">
@@ -2070,45 +2068,41 @@ interface BottomSheetProps {
 }
 
 const BottomSheet = ({ isOpen, onClose, title, children }: BottomSheetProps) => {
-  const [isClosing, setIsClosing] = useState(false);
   const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
-      setIsClosing(false);
-    } else if (shouldRender) {
-      setIsClosing(true);
-      const timer = setTimeout(() => {
-        setShouldRender(false);
-        setIsClosing(false);
-      }, 250);
+      const timer = setTimeout(() => setIsMounted(true), 20);
+      return () => clearTimeout(timer);
+    } else {
+      setIsMounted(false);
+      const timer = setTimeout(() => setShouldRender(false), 300);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
   const handleClose = () => {
-    setIsClosing(true);
+    setIsMounted(false);
     setTimeout(() => {
       onClose();
-    }, 250);
+    }, 300);
   };
 
   if (!shouldRender) return null;
 
   return (
-    <div className="absolute inset-0 z-50 flex flex-col justify-end">
+    <div className="absolute inset-0 z-50 flex flex-col justify-end overflow-hidden">
       <div 
-        className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${
-          isClosing ? 'opacity-0' : 'opacity-100'
+        className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ease-in-out ${
+          isMounted ? 'opacity-100' : 'opacity-0'
         }`} 
         onClick={handleClose} 
       />
       <div 
-        className={`bg-white w-full rounded-t-3xl p-6 relative z-10 shadow-2xl transition-all duration-300 ${
-          isClosing
-            ? 'animate-out fade-out slide-out-to-bottom duration-300'
-            : 'animate-in fade-in slide-in-from-bottom duration-300'
+        className={`bg-white w-full rounded-t-3xl p-6 relative z-10 shadow-2xl transition-transform duration-300 ease-out transform ${
+          isMounted ? 'translate-y-0' : 'translate-y-full'
         }`} 
         style={{maxHeight: '80vh', overflowY: 'auto'}}
       >
@@ -2139,45 +2133,41 @@ interface ConfirmModalProps {
 }
 
 const ConfirmModal = ({ isOpen, onClose, onConfirm, icon, iconBg, image, title, description, confirmText, confirmStyle = 'primary' }: ConfirmModalProps) => {
-  const [isClosing, setIsClosing] = useState(false);
   const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
-      setIsClosing(false);
-    } else if (shouldRender) {
-      setIsClosing(true);
-      const timer = setTimeout(() => {
-        setShouldRender(false);
-        setIsClosing(false);
-      }, 250);
+      const timer = setTimeout(() => setIsMounted(true), 20);
+      return () => clearTimeout(timer);
+    } else {
+      setIsMounted(false);
+      const timer = setTimeout(() => setShouldRender(false), 300);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
   const handleClose = () => {
-    setIsClosing(true);
+    setIsMounted(false);
     setTimeout(() => {
       onClose();
-    }, 250);
+    }, 300);
   };
 
   if (!shouldRender) return null;
 
   return (
-    <div className="absolute inset-0 z-50 flex flex-col justify-end">
+    <div className="absolute inset-0 z-50 flex flex-col justify-end overflow-hidden">
       <div 
-        className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${
-          isClosing ? 'opacity-0' : 'opacity-100'
+        className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ease-in-out ${
+          isMounted ? 'opacity-100' : 'opacity-0'
         }`} 
         onClick={handleClose} 
       />
       <div 
-        className={`bg-white w-full rounded-t-3xl p-6 relative z-10 pb-10 shadow-2xl transition-all duration-300 ${
-          isClosing
-            ? 'animate-out fade-out slide-out-to-bottom duration-300'
-            : 'animate-in fade-in slide-in-from-bottom duration-300'
+        className={`bg-white w-full rounded-t-3xl p-6 relative z-10 pb-10 shadow-2xl transition-transform duration-300 ease-out transform ${
+          isMounted ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
         <div className="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6" />
@@ -2203,7 +2193,7 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, icon, iconBg, image, title, 
             <button 
               onClick={() => {
                 handleClose();
-                setTimeout(() => onConfirm(), 250);
+                setTimeout(() => onConfirm(), 300);
               }}
               className={`flex-1 py-3.5 font-bold rounded-lg text-sm text-white ${
                 confirmStyle === 'danger' ? 'bg-red-500 hover:bg-red-600' : 'bg-primary hover:bg-primary-dark'
