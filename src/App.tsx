@@ -686,9 +686,9 @@ export default function App() {
       {currentPage === 'menu' ? (
         <div className="flex flex-col h-full bg-background relative">
           {/* Header */}
-          <div className="bg-white px-5 pt-3.5 pb-6 border-b border-slate-100 shrink-0">
+          <div className="bg-white pb-0 border-b border-slate-100 shrink-0">
             {/* Status Bar */}
-            <div className="flex justify-between items-center py-2 mb-4 text-slate-800">
+            <div className="flex justify-between items-center px-5 py-3.5 text-slate-800">
               <span className="text-[14px] font-bold tracking-tight">9:41</span>
               <div className="flex items-center gap-1.5">
                 <CellSignalFull size={16} weight="fill" />
@@ -697,13 +697,10 @@ export default function App() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between mb-2">
-              <h1 className="text-xl font-bold text-slate-900">Invoice</h1>
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <Receipt size={18} weight="fill" />
-              </div>
+            {/* Title Bar */}
+            <div className="flex items-center px-5 my-6 relative justify-center">
+              <h1 className="text-lg font-bold text-slate-800">Invoice</h1>
             </div>
-            <p className="text-xs text-slate-500 font-medium">Choose an invoice category to proceed</p>
           </div>
 
           {/* Menu Options List */}
