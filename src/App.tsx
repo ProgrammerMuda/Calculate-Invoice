@@ -846,46 +846,46 @@ export default function App() {
 
       {/* Static Select All Header Bar (Fixed outside scroll area) */}
       {activeTab === 'draft' && filteredDrafts.length > 0 && (
-        <div className="bg-slate-100/90 px-6 py-2.5 border-b border-slate-200/80 flex justify-between items-center shrink-0 z-20">
+        <div className="bg-primary/10 px-6 py-2.5 border-b border-primary/20 flex justify-between items-center shrink-0 z-20">
           <label className="flex items-center gap-3 cursor-pointer group select-none">
             <RoundedCheckbox
               checked={filteredDrafts.filter(canCalculate).length > 0 && filteredDrafts.filter(canCalculate).every(d => selectedDrafts.has(d.id))}
               onChange={toggleAllDrafts}
             />
-            <span className="text-xs font-bold text-slate-700">Select all</span>
+            <span className="text-xs font-bold text-slate-800">Select all</span>
           </label>
           {selectedDrafts.size > 0 && (
-            <span className="text-xs text-slate-500 font-semibold">{selectedDrafts.size} selected</span>
+            <span className="text-xs text-primary font-bold">{selectedDrafts.size} selected</span>
           )}
         </div>
       )}
 
       {activeTab === 'ready' && filteredReady.length > 0 && (
-        <div className="bg-slate-100/90 px-6 py-2.5 border-b border-slate-200/80 flex justify-between items-center shrink-0 z-20">
+        <div className="bg-primary/10 px-6 py-2.5 border-b border-primary/20 flex justify-between items-center shrink-0 z-20">
           <label className="flex items-center gap-3 cursor-pointer select-none">
             <RoundedCheckbox
               checked={filteredReady.filter(r => r.status !== 'Zero amount').length > 0 && filteredReady.filter(r => r.status !== 'Zero amount').every(r => selectedReady.has(r.id))}
               onChange={toggleAllReady}
             />
-            <span className="text-xs font-bold text-slate-700">Select all</span>
+            <span className="text-xs font-bold text-slate-800">Select all</span>
           </label>
           {selectedReady.size > 0 && (
-            <span className="text-xs text-slate-500 font-semibold">{selectedReady.size} selected</span>
+            <span className="text-xs text-primary font-bold">{selectedReady.size} selected</span>
           )}
         </div>
       )}
 
       {activeTab === 'sent' && filteredSent.length > 0 && (
-        <div className="bg-slate-100/90 px-6 py-2.5 border-b border-slate-200/80 flex justify-between items-center shrink-0 z-20">
+        <div className="bg-primary/10 px-6 py-2.5 border-b border-primary/20 flex justify-between items-center shrink-0 z-20">
           <label className="flex items-center gap-3 cursor-pointer select-none">
             <RoundedCheckbox
               checked={filteredSent.length > 0 && filteredSent.every(s => selectedSent.has(s.id))}
               onChange={toggleAllSent}
             />
-            <span className="text-xs font-bold text-slate-700">Select all</span>
+            <span className="text-xs font-bold text-slate-800">Select all</span>
           </label>
           {selectedSent.size > 0 && (
-            <span className="text-xs text-slate-500 font-semibold">{selectedSent.size} selected</span>
+            <span className="text-xs text-primary font-bold">{selectedSent.size} selected</span>
           )}
         </div>
       )}
