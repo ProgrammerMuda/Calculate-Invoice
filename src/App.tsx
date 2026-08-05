@@ -911,14 +911,21 @@ export default function App() {
               return (
                 <div
                   key={unit.id}
-                  className={`bg-white rounded-lg overflow-hidden transition-all duration-200 ${
+                  onClick={() => setSelectedInvoice({
+                    id: unit.id,
+                    unitNumber: unit.unitNumber,
+                    month: unit.month,
+                    status: 'Ready to sent',
+                    amount: 4716279,
+                  })}
+                  className={`bg-white rounded-lg overflow-hidden transition-all duration-200 cursor-pointer ${
                     checked ? 'ring-2 ring-primary/20' : ''
                   } ${!eligible ? 'opacity-75' : ''}`}
                 >
 
                   {/* Card Header */}
                   <div className={`flex items-center justify-between px-4 pt-4 pb-3.5 transition-colors ${checked ? 'bg-primary/[0.04]' : ''}`}>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3" onPointerDown={e => e.stopPropagation()} onClick={e => e.stopPropagation()}>
                       <RoundedCheckbox
                         checked={checked}
                         onChange={() => toggleDraftSelection(unit.id)}
